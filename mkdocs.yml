@@ -1,0 +1,9 @@
+site_name: Diary of Performance Engineer
+theme: readthedocs
+nav:
+    - Concepts:
+        - 'Home (This Site is Under Construction)': 'index.md'    
+        - 'Java oops Concepts': 'oops.md'
+        - 'Memory RSS vs VSZ' : 'rssvsz.md'
+        - 'JVM Architecture' : 'jvmarch.md'
+        - 'Understanding the OutOfMemory Errors' : 'oomerrors.md'

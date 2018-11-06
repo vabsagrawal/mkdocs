@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>JVM Architecture - Diary of Performance Engineer</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "JVM Architecture";
+    var mkdocs_page_input_path = "jvmarch.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Diary of Performance Engineer</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Concepts</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="..">Home (This Site is Under Construction)</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../oops/">Java oops Concepts</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../rssvsz/">Memory RSS vs VSZ</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">JVM Architecture</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#jvm-architecture">JVM Architecture</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#what-is-the-jvm">What is the JVM?</a></li>
+        
+            <li><a class="toctree-l4" href="#how-does-the-jvm-work">How Does the JVM Work?</a></li>
+        
+            <li><a class="toctree-l4" href="#refrences">Refrences</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../oomerrors/">Understanding the OutOfMemory Errors</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Diary of Performance Engineer</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Concepts &raquo;</li>
+        
+      
+    
+    <li>JVM Architecture</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="jvm-architecture">JVM Architecture</h1>
+<p>Every Java developer knows that bytecode will be executed by JRE (Java Runtime Environment). But many doesn't know the fact that JRE is the implementation of Java Virtual Machine (JVM), which analyzes the bytecode, interprets the code, and executes it. It is very important as a developer that we should know the Architecture of the JVM, as it enables us to write code more efficiently. In this article, we will learn more dJVM Architectureeeply about the JVM architecture in Java and the different components of the JVM.</p>
+<h3 id="what-is-the-jvm">What is the JVM?</h3>
+<p>A Virtual Machine is a software implementation of a physical machine. Java was developed with the concept of WORA (Write Once Run Anywhere), which runs on a VM. The compiler compiles the Java file into a Java .class file, then that .class file is input into the JVM, which Loads and executes the class file. Below is a diagram of the Architecture of the JVM.</p>
+<p><img alt="JVM Architecture Diagram" src="../jvmarch.jpg" /></p>
+<p>JVM Architecture Diagram </p>
+<h3 id="how-does-the-jvm-work">How Does the JVM Work?</h3>
+<p>As shown in the above architecture diagram, the JVM is divided into three main subsystems:</p>
+<ul>
+<li>Class Loader Subsystem</li>
+<li>Runtime Data Area</li>
+<li>Execution Engine</li>
+</ul>
+<p><strong>1. Class Loader Subsystem</strong>
+Java's dynamic class loading functionality is handled by the class loader subsystem. It loads, links. and initializes the class file when it refers to a class for the first time at runtime, not compile time. </p>
+<p>1.1 Loading
+Classes will be loaded by this component. Boot Strap class Loader, Extension class Loader, and Application class Loader are the three class loader which will help in achieving it.</p>
+<p>Boot Strap ClassLoader – Responsible for loading classes from the bootstrap classpath, nothing but rt.jar. Highest priority will be given to this loader.
+Extension ClassLoader – Responsible for loading classes which are inside ext folder (jre\lib).
+Application ClassLoader –Responsible for loading Application Level Classpath, path mentioned Environment Variable etc.
+The above Class Loaders will follow Delegation Hierarchy Algorithm while loading the class files.</p>
+<p>1.2 Linking
+Verify – Bytecode verifier will verify whether the generated bytecode is proper or not if verification fails we will get the verification error.
+Prepare – For all static variables memory will be allocated and assigned with default values.
+Resolve – All symbolic memory references are replaced with the original references from Method Area.</p>
+<p>1.3 Initialization
+This is the final phase of Class Loading, here all static variables will be assigned with the original values, and the static block will be executed.</p>
+<p><strong>2. Runtime Data Area</strong>
+The Runtime Data Area is divided into 5 major components:</p>
+<p><strong>Method Area</strong> – All the class level data will be stored here, including static variables. There is only one method area per JVM, and it is a shared resource.
+Heap Area – All the Objects and their corresponding instance variables and arrays will be stored here. There is also one Heap Area per JVM. Since the Method and Heap areas share memory for multiple threads, the data stored is not thread safe.
+Stack Area – For every thread, a separate runtime stack will be created. For every method call, one entry will be made in the stack memory which is called as Stack Frame. All local variables will be created in the stack memory. The stack area is thread safe since it is not a shared resource. The Stack Frame is divided into three subentities:
+Local Variable Array – Related to the method how many local variables are involved and the corresponding values will be stored here.
+Operand stack – If any intermediate operation is required to perform, operand stack acts as runtime workspace to perform the operation.
+Frame data – All symbols corresponding to the method is stored here. In the case of any exception, the catch block information will be maintained in the frame data.
+PC Registers – Each thread will have separate PC Registers, to hold the address of current executing instruction once the instruction is executed the PC register will be updated with the next instruction.
+Native Method stacks – Native Method Stack holds native method information. For every thread, a separate native method stack will be created.</p>
+<p><strong>3. Execution Engine</strong>
+The bytecode which is assigned to the Runtime Data Area will be executed by the Execution Engine. The Execution Engine reads the bytecode and executes it piece by piece.</p>
+<p><strong>Interpreter</strong> – The interpreter interprets the bytecode faster, but executes slowly. The disadvantage of the interpreter is that when one method is called multiple times, every time a new interpretation is required.
+JIT Compiler – The JIT Compiler neutralizes the disadvantage of the interpreter. The Execution Engine will be using the help of the interpreter in converting byte code, but when it finds repeated code it uses the JIT compiler, which compiles the entire bytecode and changes it to native code. This native code will be used directly for repeated method calls, which improve the performance of the system.
+Intermediate Code generator – Produces intermediate code
+Code Optimizer – Responsible for optimizing the intermediate code generated above
+Target Code Generator – Responsible for Generating Machine Code or Native Code
+Profiler – A special component, responsible for finding hotspots, i.e. whether the method is called multiple times or not.
+Garbage Collector: Collects and removes unreferenced objects. Garbage Collection can be triggered by calling "System.gc()", but the execution is not guaranteed. Garbage collection of the JVM collects the objects that are created.
+Java Native Interface (JNI): JNI will be interacting with the Native Method Libraries and provides the Native Libraries required for the Execution Engine.</p>
+<p>Native Method Libraries:It is a collection of the Native Libraries which is required for the Execution Engine.</p>
+<h3 id="refrences">Refrences</h3>
+<p>https://dzone.com/articles/jvm-architecture-explained </p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../oomerrors/" class="btn btn-neutral float-right" title="Understanding the OutOfMemory Errors">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../rssvsz/" class="btn btn-neutral" title="Memory RSS vs VSZ"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../rssvsz/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../oomerrors/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

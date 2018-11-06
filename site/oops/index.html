@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Java oops Concepts - Diary of Performance Engineer</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Java oops Concepts";
+    var mkdocs_page_input_path = "oops.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Diary of Performance Engineer</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Concepts</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="..">Home (This Site is Under Construction)</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Java oops Concepts</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#java-oops-concepts">Java oops Concepts</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#encapsulation">Encapsulation</a></li>
+        
+            <li><a class="toctree-l4" href="#inheritance">Inheritance</a></li>
+        
+            <li><a class="toctree-l4" href="#polymorphism">Polymorphism</a></li>
+        
+            <li><a class="toctree-l4" href="#abstraction">Abstraction</a></li>
+        
+            <li><a class="toctree-l4" href="#refrences">Refrences</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../rssvsz/">Memory RSS vs VSZ</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../jvmarch/">JVM Architecture</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../oomerrors/">Understanding the OutOfMemory Errors</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Diary of Performance Engineer</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Concepts &raquo;</li>
+        
+      
+    
+    <li>Java oops Concepts</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="java-oops-concepts">Java oops Concepts</h1>
+<h3 id="encapsulation">Encapsulation</h3>
+<p>Encapsulation is one of the four fundamental OOP concepts. The other three are inheritance, polymorphism, and abstraction.
+Encapsulation in Java is a mechanism of wrapping the data (variables) and code acting on the data (methods) together as as single unit. In encapsulation the variables of a class will be hidden from other classes, and can be accessed only through the methods of their current class, therefore it is also known as data hiding.</p>
+<p>To achieve encapsulation in Java :</p>
+<ul>
+<li>Declare the variables of a class as private.</li>
+<li>Provide public setter and getter methods to modify and view the variables values.</li>
+</ul>
+<h3 id="inheritance">Inheritance</h3>
+<p>Inheritance can be defined as the process where one class acquires the properties (methods and fields) of another. With the use of inheritance the information is made manageable in a hierarchical order.</p>
+<p>The class which inherits the properties of other is known as subclass (derived class, child class) and the class whose properties are inherited is known as superclass (base class, parent class).</p>
+<p><strong>extends</strong> is the keyword used to inherit the properties of a class. Below given is the syntax of extends keyword.</p>
+<h3 id="polymorphism">Polymorphism</h3>
+<p>Polymorphism is the concept where an object behaves differently in different situations.
+<strong>There are two types of polymorphism – compile time polymorphism and runtime polymorphism.</strong></p>
+<p><strong>Compile time polymorphism</strong> is achieved by method overloading. For example, we can have a class as below.</p>
+<pre><code>public class Circle {
+
+public void draw(){
+System.out.println("Drwaing circle with default color Black and diameter 1 cm.");
+}
+
+public void draw(int diameter){
+System.out.println("Drwaing circle with default color Black and diameter"+diameter+" cm.");
+}
+
+public void draw(int diameter, String color){
+System.out.println("Drwaing circle with color"+color+" and diameter"+diameter+" cm.");
+}
+}
+</code></pre>
+<p>Here we have multiple draw methods but they have different behavior. This is a case of method overloading because all the methods name is same and arguments are different. Here compiler will be able to identify the method to invoke at compile time, hence it’s called compile time polymorphism.</p>
+<p><strong>Runtime polymorphism</strong> is implemented when we have “IS-A” relationship between objects. This is also called as method overriding because subclass has to override the superclass method for runtime polymorphism. If we are working in terms of superclass, the actual implementation class is decided at runtime. Compiler is not able to decide which class method will be invoked. This decision is done at runtime, hence the name as runtime polymorphism or dynamic method dispatch.</p>
+<pre><code>package com.test;
+
+public interface Shape {
+public void draw();
+}
+
+package com.test;
+
+public class Circle implements Shape{
+
+@Override
+public void draw(){
+System.out.println("Drwaing circle");
+}
+
+}
+
+package com.test;
+public class Square implements Shape {
+
+@Override
+public void draw() {
+System.out.println("Drawing Square");
+}
+
+}
+</code></pre>
+<p>Shape is the superclass and there are two subclasses Circle and Square. Below is an example of runtime polymorphism.</p>
+<pre><code>Shape sh = new Circle();
+sh.draw();
+
+Shape sh1 = getShape(); //some third party logic to determine shape
+sh1.draw();
+</code></pre>
+<p>In above examples, java compiler don’t know the actual implementation class of Shape that will be used at runtime, hence runtime polymorphism.</p>
+<h3 id="abstraction">Abstraction</h3>
+<p>In Object oriented programming Abstraction is a process process of hiding the implementation details from the user, only the functionality will be provided to the user. In other words user will have the information on what the object does instead of how it does it.</p>
+<p><strong>In Java Abstraction is achieved using Abstract classes and Interfaces.</strong></p>
+<p>A class which contains the abstract keyword in its declaration is known as abstract class.</p>
+<p>An interface is a reference type in Java, it is similar to class, it is a collection of abstract methods. A class implements an interface, thereby inheriting the abstract methods of the interface.
+Along with abstract methods an interface may also contain constants, default methods, static methods, and nested types. Method bodies exist only for default methods and static methods.</p>
+<p>Writing an interface is similar to writing a class. But a class describes the attributes and behaviours of an object. And an interface contains behaviours that a class implements.</p>
+<p>Unless the class that implements the interface is abstract, all the methods of the interface need to be defined in the class.</p>
+<p>An interface is similar to a class in the following ways:</p>
+<ul>
+<li>An interface can contain any number of methods.</li>
+<li>An interface is written in a file with a .java extension, with the name of the interface matching the name of the file.</li>
+<li>The byte code of an interface appears in a .class file.</li>
+<li>Interfaces appear in packages, and their corresponding bytecode file must be in a directory structure that matches the package name.</li>
+<li>However, an interface is different from a class in several ways, including:</li>
+<li>You cannot instantiate an interface.</li>
+<li>An interface does not contain any constructors.</li>
+<li>All of the methods in an interface are abstract.</li>
+<li>An interface cannot contain instance fields. The only fields that can appear in an interface must be declared both static and final.</li>
+<li>An interface is not extended by a class; it is implemented by a class.</li>
+<li>An interface can extend multiple interfaces.</li>
+</ul>
+<h3 id="refrences">Refrences</h3>
+<p>https://www.google.com
+https://www.tutorialspoint.com</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../rssvsz/" class="btn btn-neutral float-right" title="Memory RSS vs VSZ">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home (This Site is Under Construction)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../rssvsz/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

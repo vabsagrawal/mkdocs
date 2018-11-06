@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Understanding the OutOfMemory Errors - Diary of Performance Engineer</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Understanding the OutOfMemory Errors";
+    var mkdocs_page_input_path = "oomerrors.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Diary of Performance Engineer</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Concepts</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="..">Home (This Site is Under Construction)</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../oops/">Java oops Concepts</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../rssvsz/">Memory RSS vs VSZ</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../jvmarch/">JVM Architecture</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Understanding the OutOfMemory Errors</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#understanding-the-outofmemory-errors">Understanding the OutOfMemory Errors</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-java-heap-space">java.lang.OutOfMemoryError: Java heap space</a></li>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-permgen-space">java.lang.OutOfMemoryError: PermGen space</a></li>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-gc-overhead-limit-exceeded">java.lang.OutOfMemoryError: GC overhead limit exceeded</a></li>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-nativegetnewtla">java.lang.OutOfMemoryError: nativeGetNewTLA</a></li>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-requested-array-size-exceeds-vm-limit">java.lang.OutOfMemoryError: Requested array size exceeds VM limit</a></li>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-request-bytes-for-out-of-swap-space">java.lang.OutOfMemoryError: request  bytes for . Out of swap space?</a></li>
+        
+            <li><a class="toctree-l4" href="#javalangoutofmemoryerror-native-method">java.lang.OutOfMemoryError:   (Native method)</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Diary of Performance Engineer</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Concepts &raquo;</li>
+        
+      
+    
+    <li>Understanding the OutOfMemory Errors</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="understanding-the-outofmemory-errors">Understanding the OutOfMemory Errors</h1>
+<p>Whenever you find yourself staring at a stacktrace with an OutOfMemoryError in it, it should all be crystal-clear. The program has got no more elbow room and is dying simply because of the lack of it. From 10,000 feet or an executive chair this might already contain too much information. But for those of you who have to build or maintain the applications and figure out why a particular error is created – we can share a bit more insight into the issue.</p>
+<p>In this post we will take a look what do different OutOfMemoryError messages actually mean. We start with the most common cases and move forward to the more interesting situations.</p>
+<ul>
+<li>java.lang.OutOfMemoryError: Java heap space</li>
+<li>java.lang.OutOfMemoryError: PermGen space</li>
+<li>java.lang.OutOfMemoryError: GC overhead limit exceeded</li>
+<li>java.lang.OutOfMemoryError: unable to create new native thread</li>
+<li>java.lang.OutOfMemoryError: nativeGetNewTLA</li>
+<li>java.lang.OutOfMemoryError: Requested array size exceeds VM limit</li>
+<li>java.lang.OutOfMemoryError: request <size> bytes for <reason>. Out of swap space?</li>
+<li>java.lang.OutOfMemoryError: <reason> <stack trace> (Native method)</li>
+</ul>
+<h3 id="javalangoutofmemoryerror-java-heap-space">java.lang.OutOfMemoryError: Java heap space</h3>
+<p>We start with the one you have all seen more than you would actually  like. This is the Java Virtual Machine’s way to announce you that there is no more room in the virtual machine heap area. You are trying to create a new object, but the amount of memory this newly created structure is about to consume is more than the JVM has in the heap. The JVM has tried to free memory by calling full GC before throwing in the towel, but without any success. The fastest way to get rid of the symptoms is to increase the heap via -Xmx parameter. Note that both this and other recommendations in the article should be taken with a grain of salt. More often than not you just end up hiding the symptoms of the underlying problem.</p>
+<p>The next suspect is also quite common. </p>
+<h3 id="javalangoutofmemoryerror-permgen-space">java.lang.OutOfMemoryError: PermGen space</h3>
+<p>I guess most of you have seen the java.lang.OutOfMemoryError: PermGen space during redeploys. It is pretty much the same message as the first one, but instead of the heap you are now trying to allocate memory in thePermanent Generation area. And again, you do not have enough room, so the JVM native code is kind enough to let you know about it. This message tends to disappear (for awhile) if you increase the -XX:MaxPermSize parameter.</p>
+<h3 id="javalangoutofmemoryerror-gc-overhead-limit-exceeded">java.lang.OutOfMemoryError: GC overhead limit exceeded</h3>
+<p>The third one – the java.lang.OutOfMemoryError: GC overhead limit exceeded – is a bit of a different beast. Instead of the missing heap / permgen the JVM is signaling that your application is spending too much time in garbage collection with little to show for it. By default the JVM is configured to throw this error if you are spending more than 98% of the total time in GC and less than 2% of the heap is recovered after the GC. Sounds like a perfectly good place to have the “fail fast” safeguard at place. In the rare cases where it makes sense to disable it, add -XX:-UseGCOverheadLimit to your startup scripts.
+The above three OutOfMemoryError messages make up to 98% of the cases Plumbr detects. So there is a strong chance that the remaining quintet is somewhat unknown to you.
+java.lang.OutOfMemoryError: unable to create new native thread is the  message you will receive if the JVM is asking a new thread from the OS and the underlying OS cannot allocate a new thread anymore. This limit is very platform-dependent, so if you are curious to find out your limitations then run your own little experiment using the following code snippet. On my 64bit MacOS X running a latest JDK 7 I run into troubles when creating thread #2032.</p>
+<pre><code>while(true){
+    new Thread(new Runnable(){
+        public void run() {
+            try {
+                Thread.sleep(10000000);
+            } catch(InterruptedException e) { }        
+        }    
+    }).start();
+}
+</code></pre>
+<h3 id="javalangoutofmemoryerror-nativegetnewtla">java.lang.OutOfMemoryError: nativeGetNewTLA</h3>
+<p>is the symptom where the JVM cannot allocate new Thread Local Area. This is something you only encounter on jRockit virtual machine. If you recall, the Thread Local Area is the buffer used to efficiently allocate memory in a multi-threaded application. Each thread has its own pre-allocated buffer where all the objects instantiated by this thread are born. You will run into problems when you are creating a vast amount of objects in a heavily multi-threaded application, in case of which you might turn to tweaking the -XXtlaSizeparameter .</p>
+<h3 id="javalangoutofmemoryerror-requested-array-size-exceeds-vm-limit">java.lang.OutOfMemoryError: Requested array size exceeds VM limit</h3>
+<p>is the message you find yourself staring at when you are trying to create an array larger than your VM limitations allow. On my 64bit Mac OS X with a recent JDK 7 build I find myself acknowledging the fact that arrays with Integer.MAX_INT-2 elements are OK, but just one more straw, namely Integer.MAX_INT-1, breaks the camel’s back. On older 32-bit machines it had its benefits, limiting the array sizes to fit into the tiny heaps available back then. On modern 64bit machines it seems to create more confusion than to actually help in solving anything.</p>
+<h3 id="javalangoutofmemoryerror-request-bytes-for-out-of-swap-space">java.lang.OutOfMemoryError: request <size> bytes for <reason>. Out of swap space?</h3>
+<p>This error message is thrown when the JVM fails to allocate native memory from the OS. Note that it is completely different from the standard cases where you have exhausted the heap or permgen spaces. This message tends to be displayed when you are operating close to the platform limits. As the message itself is stating you might have exceeded the amount of physical and virtual memory available. As the latter is often implemented via swapping memory to the disk, the first thing you might think of as a quick fix would be to increase the size of the swap file. But I am yet to see an application which would behave normally while swapping, so most likely this quick fix won’t help you much.</p>
+<h3 id="javalangoutofmemoryerror-native-method">java.lang.OutOfMemoryError: <reason> <stack trace> (Native method)</h3>
+<p>Now it is time to beg for help from your fellow C developers. As the message states, you are facing problems with the native code, but – unlike in the last case – the allocation failure was detected in a JNI or native method instead of the JVM code.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../jvmarch/" class="btn btn-neutral" title="JVM Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../jvmarch/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
