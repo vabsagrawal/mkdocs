@@ -1,4 +1,4 @@
-site_name: Diary of Performance Engineer
+site_name: Software Performance Engineering/Testing Notes
 theme: readthedocs
 nav:
     - Concepts:
